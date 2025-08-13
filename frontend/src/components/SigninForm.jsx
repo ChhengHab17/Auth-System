@@ -27,8 +27,8 @@ export const SigninForm = () => {
   };
 
   return (
-    <div className="bg-gray-300 flex flex-col items-center w-100 rounded-xl">
-      <div className="w-20 h-20">
+    <div className="bg-gray-100 flex flex-col items-center w-100 rounded-xl drop-shadow-lg">
+      <div className="w-20 h-20 mt-2">
         <img src={user} alt="user_icon" />
       </div>
       <div className="w-70 p-4">

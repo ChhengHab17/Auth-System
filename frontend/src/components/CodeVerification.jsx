@@ -57,7 +57,7 @@ export const CodeVerification = () => {
     }
   }
   return (
-    <div className="bg-gray-200 flex flex-col items-center w-120 h-100 rounded-xl p-4 justify-center drop-shadow-lg">
+    <div className="bg-gray-100 flex flex-col items-center w-120 h-120 rounded-xl p-4 justify-center drop-shadow-lg">
       <div className="w-20 h-20">
         <img src={lock} alt="locking" />
       </div>
