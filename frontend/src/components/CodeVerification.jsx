@@ -3,11 +3,16 @@ import lock from "../assets/lock.svg";
 import { useState, useRef } from "react";
 import { sendCode, verifyCode } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { CountdownTimer } from "./CountDown";
+import { CodePopup } from "./CodePopup";
 
 export const CodeVerification = () => {
   const [code, setCode] = useState(Array(6).fill(""));
   const navigate = useNavigate();
   const inputRefs = useRef([]);
+  const [timerResetCounter, setTimerResetCounter] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const initialTimer = 5 * 60 * 1000;
 
   const handleChange = (value, index) => {
     if (/^\d*$/.test(value)) {
@@ -41,6 +46,8 @@ export const CodeVerification = () => {
   };
   const resendCode = async () =>{
     try{
+      setIsOpen(true);
+      setTimerResetCounter((c) => c + 1);
       const email = localStorage.getItem('email');
       const response = await sendCode(email);
       console.log("Code verification Successfully", response);
@@ -50,11 +57,12 @@ export const CodeVerification = () => {
     }
   }
   return (
-    <div className="bg-gray-300 flex flex-col items-center w-120 h-100 rounded-xl p-4 justify-center">
+    <div className="bg-gray-200 flex flex-col items-center w-120 h-100 rounded-xl p-4 justify-center drop-shadow-lg">
       <div className="w-20 h-20">
         <img src={lock} alt="locking" />
       </div>
       <div className="flex flex-col w-100 p-4 items-center">
+        <CountdownTimer initialTime={initialTimer} resetTrigger={timerResetCounter}/>
         <h2 className="text-xl font-bold">Enter Code Verification</h2>
         <p className="text-gray-600 mb-6">
           Enter code that we sent too your Gmail account
@@ -83,8 +91,9 @@ export const CodeVerification = () => {
         </form>
       </div>
       <p className="flex justify-between text-sm">
-        Didn't get code <button onClick={resendCode} className="text-blue-500 ml-2"> resend</button>
+        Didn't get code <button onClick={resendCode} className="text-blue-500 ml-2 cursor-pointer"> resend</button>
       </p>
+      <CodePopup isOpen={isOpen} onClose={() => setIsOpen(false)}/>
     </div>
   );
 };
